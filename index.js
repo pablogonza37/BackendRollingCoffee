@@ -5,7 +5,7 @@ console.log('Hola mundo v2 bjbjbjhb')
 // puedo compilar el index.js usando node --watch index.js en forma experimental
 const app = express();
 //crear una variable
-app.set('port', 4000);
+app.set('port', process.env.PORT || 4000);
 app.listen(app.get('port'), ()=>{
     console.log('Estoy en el puerto ' + app.get('port'))
 })
