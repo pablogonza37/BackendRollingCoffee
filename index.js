@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import 'dotenv/config'; //permite procesar variables de entorno
 import morgan from "morgan";
+import {fileURLToPath} from 'url';
+import path from 'path';
 
 //1- configurar un puerto
 // puedo compilar el index.js usando node --watch index.js en forma experimental
@@ -18,6 +20,15 @@ app.use(morgan('dev')) // nos da info extra en la terminal
 app.use(express.json()) //interpretar datos en formato json
 app.use(express.urlencoded({extended:true})) // ayuda a interpretar los datos del body del request
 // falta configurar el index.html
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
+//console.log(__filename);
+//console.log(path.join(__dirname, '/public'));
+app.use(express.static(path.join(__dirname, '/public')))
 
 //3 - configurar las rutas
-
+app.get('/nuevo', (req, res)=>{
+console.log('alguien solicito algo');
+//falta configurar la respuesta
+res.send('respuesta desde nuestro backend de rollingCoffee');
+})
