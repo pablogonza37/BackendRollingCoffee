@@ -4,6 +4,7 @@ import 'dotenv/config'; //permite procesar variables de entorno
 import morgan from "morgan";
 import {fileURLToPath} from 'url';
 import path from 'path';
+import productosRouter from "./src/routes/productos.routes.js";
 
 //1- configurar un puerto
 // puedo compilar el index.js usando node --watch index.js en forma experimental
@@ -27,8 +28,11 @@ const __dirname = path.dirname(__filename)
 app.use(express.static(path.join(__dirname, '/public')))
 
 //3 - configurar las rutas
-app.get('/nuevo', (req, res)=>{
-console.log('alguien solicito algo');
+
+app.use('/api', productosRouter)
+
+//app.get('/nuevo', (req, res)=>{
+//console.log('alguien solicito algo');
 //falta configurar la respuesta
-res.send('respuesta desde nuestro backend de rollingCoffee');
-})
+//res.send('respuesta desde nuestro backend de rollingCoffee');
+//})
