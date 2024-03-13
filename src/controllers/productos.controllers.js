@@ -1,22 +1,30 @@
 import Producto from "../database/model/producto.js";
 
-export const listarProductos = (req, res) => {
-  console.log("desde listar productos");
-  res.send("Enviar lista de productos...");
+export const listarProductos = async (req, res) => {
+  try {
+    // pedir a la base de datos la lista de coleccion de productos
+    const productos = await Producto.find();
+    res.status(200).json(productos);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(404)
+      .json({ mensaje: "No se pudo encontrar la lista de producctos" });
+  }
 };
 
 export const crearProducto = async (req, res) => {
   try {
     // verificar los datos del body
-    console.log(req.body)
+    console.log(req.body);
     //validar los datos
     // pedir a la BD crear el producto
     const productoNuevo = new Producto(req.body);
     await productoNuevo.save();
     // enviar el status 201
     res.status(201).json({
-      mensaje: "El producto fue creado correctamente"
-    })
+      mensaje: "El producto fue creado correctamente",
+    });
   } catch (error) {
     console.log(error);
     res.status(400).json({
