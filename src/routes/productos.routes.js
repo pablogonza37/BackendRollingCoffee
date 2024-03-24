@@ -4,6 +4,7 @@ import {
   crearProducto,
   obtenerProducto,
   editarProducto,
+  borrarProducto,
 } from "../controllers/productos.controllers.js";
 import validacionesProducto from "../helpers/validacionProducto.js";
 
@@ -13,6 +14,6 @@ router
   .route("/productos")
   .get(listarProductos)
   .post([validacionesProducto], crearProducto);
-router.route("/producto/:id").get(obtenerProducto).put(editarProducto);
+router.route("/productos/:id").get(obtenerProducto).put(editarProducto).delete(borrarProducto);
 
 export default router;
