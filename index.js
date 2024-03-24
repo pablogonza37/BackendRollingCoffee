@@ -5,6 +5,7 @@ import morgan from "morgan";
 import {fileURLToPath} from 'url';
 import path from 'path';
 import productosRouter from "./src/routes/productos.routes.js";
+import usuariosRouter from "./src/routes/usuarios.routes.js"
 import './src/database/database.js'
 
 //1- configurar un puerto
@@ -30,7 +31,8 @@ app.use(express.static(path.join(__dirname, '/public')))
 
 //3 - configurar las rutas
 
-app.use('/api', productosRouter)
+app.use('/api', productosRouter);
+app.use('/api', usuariosRouter)
 
 //app.get('/nuevo', (req, res)=>{
 //console.log('alguien solicito algo');
