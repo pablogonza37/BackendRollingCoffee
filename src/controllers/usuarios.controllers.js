@@ -1,11 +1,26 @@
 import Usuario from "../database/model/usuario.js";
+import bcrypt from 'bcrypt'
 
 export const crearUsuario = async (req, res) => {
     try {
+      const  {email, password } = req.body;
+      //verificar si el maail ya existe en la bd
+      const emailValidacion = await Usuario.findOne({email});
+      if (emailValidacion){
+        return res.status(400).json({
+          mensaje: "Este correo ya se encuentra registrado"
+        })
+      }// encriptar password
+      const saltos = bcrypt.genSaltSync(10);
+      const passEncriptada = bcrypt.hashSync(password, saltos);
       const usuarioNuevo = new Usuario(req.body);
+      usuarioNuevo.password  = passEncriptada;
       await usuarioNuevo.save();
+      // agregar un token
       res.status(201).json({
         mensaje: "El usuario fue creado correctamente",
+        email: usuarioNuevo.email,
+        nombreUsuario: usuarioNuevo.nombre,
       });
     } catch (error) {
       console.log(error);
