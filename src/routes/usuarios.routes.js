@@ -5,6 +5,6 @@ import validacionesUsuario from "../helpers/validacionUsuario.js";
 const router = Router();
 
 router.route("/usuarios").post([validacionesUsuario], crearUsuario).get(listarUsuarios);
-router.route("/usuarios/:id").get(obtenerUsuario).delete(borrarUsuario).put(editarUsuario);
+router.route("/usuarios/:id").get(obtenerUsuario).delete(borrarUsuario).put([validacionesUsuario], editarUsuario);
 
 export default router;

@@ -4,13 +4,20 @@ import generarJWT from "../helpers/generarJWT.js";
 
 export const crearUsuario = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, nombreUsuario } = req.body;
     //verificar si el mail ya existe en la bd
+    const nombreValidacion = await Usuario.findOne({ nombreUsuario });
+    if (nombreValidacion) {
+      return res.status(400).json({
+        mensaje: "Nombre de usuario ya en uso",
+      });
+    }
     const emailValidacion = await Usuario.findOne({ email });
     if (emailValidacion) {
       return res.status(400).json({
         mensaje: "Este correo ya se encuentra registrado",
       });
+      
     } // encriptar password
     const saltos = bcrypt.genSaltSync(10);
     const passEncriptada = bcrypt.hashSync(password, saltos);
@@ -23,7 +30,7 @@ export const crearUsuario = async (req, res) => {
     res.status(201).json({
       mensaje: "El usuario fue creado correctamente",
       email: usuarioNuevo.email,
-      nombreUsuario: usuarioNuevo.nombre,
+      nombreUsuario: usuarioNuevo.nombreUsuario,
       token: token,
     });
   } catch (error) {
@@ -122,9 +129,11 @@ export const login = async (req, res) => {
     //generar el token nuevamente
     const token = await generarJWT(usuarioBuscado._id, usuarioBuscado.email);
     res.status(200).json({
-      mensaje: "Los datos del usuario son correctos",
-      email: email,
-      token,
+      mensaje: "Inicio de sesión exitoso",
+      email: usuarioBuscado.email,
+      token: token,
+      rol: usuarioBuscado.rol,
+      suspendido: usuarioBuscado.suspendido,
     });
   } catch (error) {
     console.error(error);
